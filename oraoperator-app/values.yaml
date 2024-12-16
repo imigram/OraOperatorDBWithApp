@@ -1,0 +1,99 @@
+# Oracle Database Operator Configuration
+
+# Namespace Configuration
+namespace:
+  create: true
+  name: "oracle-database"
+
+# Database Connection Configuration
+database:
+  # Oracle Database connection settings
+  host: ""
+  port: 1521
+  serviceName: "ORCLCDB"
+  # Container Database (CDB) settings
+  cdb:
+    name: "ORCLCDB"
+    pdbName: "ORCLPDB1"
+    # Reference to external secret containing sys/system passwords
+    adminSecretsName: "cdb-secrets"
+    # Storage configuration
+    storage:
+      size: "100Gi"
+      storageClass: "standard"
+  
+  # TLS Configuration (secrets must be pre-created)
+  tls:
+    enabled: true
+    caSecretName: "db-ca-secret"
+    certificateSecretName: "db-tls-secret"
+# ORDS (Oracle REST Data Services) Configuration
+ords:
+  enabled: true
+  image:
+    repository: container-registry.oracle.com/database/ords
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8080
+  replicas: 1
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  # Reference to external secret containing ORDS passwords
+  secretName: "ords-secrets"
+# Test Application Configuration
+testApp:
+  enabled: true
+  image:
+    repository: ""
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8080
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+# Common configurations
+global:
+  imagePullSecrets: []
+  # Add custom labels to all resources
+  labels: {}
+  # Add custom annotations to all resources
+  annotations: {}
+
+# Pod Security Settings
+podSecurityContext:
+  fsGroup: 54321
+
+securityContext:
+  runAsUser: 54321
+  runAsGroup: 54321
+
+# Monitoring Configuration
+monitoring:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+    interval: 30s
+
+# Resource Configuration
+persistence:
+  enabled: true
+  storageClass: ""
+  size: "50Gi"
+
+# Node placement
+nodeSelector: {}
+tolerations: []
+affinity: {}

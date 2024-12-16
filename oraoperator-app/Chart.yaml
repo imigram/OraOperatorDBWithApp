@@ -1,0 +1,13 @@
+apiVersion: v2
+name: oraoperator-app
+description: A Helm chart for Oracle Database Operator deployment with test application and supporting components for Oracle 19c database management
+keywords:
+  - oracle
+  - database
+  - operator
+  - oracle19c
+  - cdb
+  - pdb
+type: application
+version: 0.1.0
+appVersion: "19.0.0"

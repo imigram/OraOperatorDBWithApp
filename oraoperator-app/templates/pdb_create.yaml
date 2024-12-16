@@ -1,0 +1,46 @@
+apiVersion: database.oracle.com/v1alpha1
+kind: PDB
+metadata:
+  name: testpdb
+  namespace: oracle-database-operator-system
+  labels:
+    cdb: cdb19c
+spec:
+  cdbResName: "cdb19c"
+  cdbNamespace: "oracle-database-operator-system"
+  cdbName: "DB19C"
+  pdbName: "testpdb"
+  adminName:
+    secret:
+      secretName: "testpdb-secret"
+      key: "sysadmin_user"
+  adminPwd:
+    secret:
+      secretName: "testpdb-secret"
+      key: "sysadmin_pwd"
+  webServerPwd:
+    secret:
+      key: webserver_pwd
+      secretName: cdb19c-secret
+  webServerUser:
+    secret:
+      key: webserver_user
+      secretName: cdb19c-secret
+  fileNameConversions: "NONE"
+  totalSize: "1G"
+  tempSize: "100M"
+  #action: "Create"
+  action: "Delete"
+  dropAction: "INCLUDING"
+  pdbTlsCat:
+    secret:
+      secretName: "db-ca"
+      key: "ca.crt"
+  pdbTlsCrt:
+    secret:
+      secretName: "db-tls"
+      key: "tls.crt"
+  pdbTlsKey:
+    secret:
+      secretName: "db-tls"
+      key: "tls.key"
